@@ -1023,6 +1023,10 @@
                 {
                     "name": "Black",
                     "hex": "000000"
+                },
+                {
+                    "name": "Gray",
+                    "hex": "CECDCA"
                 }
             ]
         },
