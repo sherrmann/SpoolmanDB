@@ -84,6 +84,74 @@
                     "hex": "FFFFFF"
                 }
             ]
+        },
+        {
+            "name": "Matte {color_name}",
+            "material": "PLA",
+            "density": 1.25,
+            "finish": "matte",
+            "weights": [
+                {
+                    "weight": 1000.0,
+                    "spool_weight": 140,
+                    "spool_type": "cardboard"
+                }
+            ],
+            "diameters": [
+                1.75
+            ],
+            "extruder_temp": 220,
+            "bed_temp": 60,
+            "colors": [
+                {
+                    "name": "Beige",
+                    "hex": "EFD8BE"
+                },
+                {
+                    "name": "Navy Blue",
+                    "hex": "000080"
+                },
+                {
+                    "name": "Black",
+                    "hex": "000000"
+                },
+                {
+                    "name": "Blue Grey",
+                    "hex": "6699CC"
+                },
+                {
+                    "name": "Ice Blue",
+                    "hex": "84BDF5"
+                },
+                {
+                    "name": "Mint Green",
+                    "hex": "ADEBB3"
+                },
+                {
+                    "name": "Ruby Red",
+                    "hex": "E60000"
+                },
+                {
+                    "name": "Sakura Pink",
+                    "hex": "FFB7C5"
+                },
+                {
+                    "name": "Slate Grey",
+                    "hex": "B0B0B2"
+                },
+                {
+                    "name": "Sunshine Yellow",
+                    "hex": "EBCA49"
+                },
+                {
+                    "name": "Teal Green",
+                    "hex": "00D2D0"
+                },
+                {
+                    "name": "White",
+                    "hex": "F4F4F4"
+                }
+            ]
         }
     ]
 }

@@ -29,9 +29,9 @@
                         "pattern": "\\{"
                     },
                     "material": {
-                        "$comment": "Valid materials must be uppercase letters and numbers, optionally separated by + or -. Optionally ends with -CF or -GF followed by a number. Examples: ABS, ABS-CF, PC+ABS, PC+ABS-CF10.",
+                        "$comment": "Valid materials must be uppercase letters and numbers, optionally separated by + or -. Optionally ends with -CF or -GF followed by a number, or a single-letter variant suffix (-X, -T). Examples: ABS, ABS-CF, ABS-T, ASA-X, PC+ABS, PC+ABS-CF10.",
                         "type": "string",
-                        "pattern": "^[A-Z0-9]+(\\+[A-Z0-9]+)*(-(CF\\d{0,2}|GF\\d{0,2}|\\d{2}[AD]))?\\+?$"
+                        "pattern": "^[A-Z0-9]+(\\+[A-Z0-9]+)*(-(CF\\d{0,2}|GF\\d{0,2}|\\d{2}[AD]|X|T))?\\+?$"
                     },
                     "density": {
                         "type": "number",
@@ -211,6 +211,36 @@
                                 "glow": {
                                     "$comment": "True if this color has a glow-in-the-dark effect",
                                     "type": "boolean"
+                                },
+                                "codes": {
+                                    "$comment": "Manufacturer product codes / SKUs for this color variant (e.g. Bambu Lab '10601' for PLA Basic Blue).",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "minLength": 1
+                                    },
+                                    "uniqueItems": true,
+                                    "minItems": 1
+                                },
+                                "eans": {
+                                    "$comment": "EAN/GTIN barcodes for the spooled version of this color.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "pattern": "^[0-9]{8,14}$"
+                                    },
+                                    "uniqueItems": true,
+                                    "minItems": 1
+                                },
+                                "eans_refill": {
+                                    "$comment": "EAN/GTIN barcodes for the refill (no spool) version of this color.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "pattern": "^[0-9]{8,14}$"
+                                    },
+                                    "uniqueItems": true,
+                                    "minItems": 1
                                 }
                             }
                         }

@@ -101,6 +101,10 @@
                     "hex": "2B3B61"
                 },
                 {
+                    "name": "Carmine Red",
+                    "hex": "B54230"
+                },
+                {
                     "name": "Clear",
                     "hex": "dcdcdc"
                 }
@@ -490,6 +494,14 @@
                 {
                     "name": "Natural",
                     "hex": "DFDFD3"
+                },
+                {
+                    "name": "Galaxy Red",
+                    "hex": "D94A5A"
+                },
+                {
+                    "name": "Ms. Pink",
+                    "hex": "E34A94"
                 }
             ]
         }
