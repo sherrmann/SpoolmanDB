@@ -1,7 +1,9 @@
 # SpoolmanDB
 A centralized place to store information about 3D printing filaments and their manufacturers.
 
-The database is hosted using GitHub Pages, you can browse it at: [https://donkie.github.io/SpoolmanDB/](https://donkie.github.io/SpoolmanDB/)
+The database is hosted using GitHub Pages, you can browse it at: [https://sherrmann.github.io/SpoolmanDB/](https://sherrmann.github.io/SpoolmanDB/)
+
+This is a fork of [Donkie/SpoolmanDB](https://github.com/Donkie/SpoolmanDB) that additionally includes reviewed data from upstream pull requests that have not been merged there yet.
 
 You can contribute to this database by adding/editing files and submitting pull requests in this repository.
 
