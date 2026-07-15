@@ -9,6 +9,7 @@ permissions:
   contents: write
   pull-requests: write
   issues: write
+  actions: write # needed to create workflow_dispatch events for build.yml
 
 jobs:
   sync:
@@ -31,13 +32,29 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COUNT: ${{ steps.check.outputs.count }}
         run: |
+          # Idempotence guard: if a sync PR is already open (this week's or an
+          # unmerged earlier one), don't stack another on top of it.
+          pending=$(gh pr list --state open --json headRefName --jq '[.[]|select(.headRefName|startswith("upstream-sync/"))]|length')
+          if [ "${pending}" != "0" ]; then
+            echo "sync PR already pending"
+            exit 0
+          fi
           week=$(date -u +%G-W%V)
           branch="upstream-sync/${week}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "${branch}"
           if git merge --no-edit FETCH_HEAD; then
-            git push origin "${branch}"
+            # --force is safe: the open-PR guard above exits in every case
+            # except a leftover orphan branch that has no PR.
+            git push --force origin "${branch}"
+            # Pushes made with GITHUB_TOKEN do not trigger workflows (GitHub's
+            # recursion prevention), so this push alone would never produce the
+            # required validate/compile check runs and auto-merge would hang.
+            # workflow_dispatch is exempt from that rule, so dispatch build.yml
+            # explicitly; its check runs attach to the branch head SHA and
+            # satisfy the required contexts.
+            gh workflow run build.yml --ref "${branch}"
             gh pr create --head "${branch}" \
               --title "Upstream sync ${week} (${COUNT} commits)" \
               --body "Automated weekly merge of Donkie/SpoolmanDB main. Schema/build CI is the gate."
