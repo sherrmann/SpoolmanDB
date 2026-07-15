@@ -1,0 +1,51 @@
+name: Upstream sync
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Fetch upstream
+        run: git fetch https://github.com/Donkie/SpoolmanDB.git main
+
+      - name: Count new upstream commits
+        id: check
+        run: echo "count=$(git rev-list --count main..FETCH_HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Merge and open auto-merge PR (or conflict issue)
+        if: steps.check.outputs.count != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COUNT: ${{ steps.check.outputs.count }}
+        run: |
+          week=$(date -u +%G-W%V)
+          branch="upstream-sync/${week}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "${branch}"
+          if git merge --no-edit FETCH_HEAD; then
+            git push origin "${branch}"
+            gh pr create --head "${branch}" \
+              --title "Upstream sync ${week} (${COUNT} commits)" \
+              --body "Automated weekly merge of Donkie/SpoolmanDB main. Schema/build CI is the gate."
+            gh pr merge "${branch}" --auto --merge
+          else
+            files=$(git diff --name-only --diff-filter=U | sed 's/^/- /')
+            git merge --abort
+            gh issue create --title "Upstream sync conflict ${week}" \
+              --label upstream-sync-conflict \
+              --body "$(printf 'Weekly merge of Donkie/SpoolmanDB main hit conflicts in:\n\n%s\n\nResolve manually: fetch upstream, merge, push a PR.' "${files}")"
+          fi

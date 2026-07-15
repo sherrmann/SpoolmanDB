@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - "upstream-sync/**"
   pull_request:
     branches:
       - main
@@ -54,7 +55,7 @@ jobs:
 
   # Single deploy job since we're just deploying
   deploy:
-    if: ${{ github.event_name != 'pull_request' }}
+    if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
     needs: [compile]
     concurrency:
       group: "pages"
